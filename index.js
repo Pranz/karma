@@ -42,7 +42,7 @@ api.get.entities = function() {
 			health: 100,
 			strength: 300,
 			pos: {x: 10, y: 10},
-			texture: 'url.png',
+			texture: 'url.png'
 		},
 
 		{
@@ -50,7 +50,7 @@ api.get.entities = function() {
 			health: 100,
 			strength: 300,
 			pos: {x: 11, y: 11},
-			texture: 'url.png',
+			texture: 'url.png'
 		},
 	];
 
