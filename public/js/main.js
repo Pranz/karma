@@ -11,17 +11,24 @@ window.onload = function() {
     var state = getInitialState();
     document.addEventListener('keypress', function(event) { onKeyPress(state, event); });
     document.addEventListener('keyup', function(event) { onKeyUp(state, event); });
-    gameLoop(ctx, state);
-
 
     var socket = io.connect('http://localhost:3000');
 
     socket.emit('createPlayer', {name : prompt('Name:')});
-
-    // Draw map
-    socket.on('entities', function (data) {
-        console.log(data);
+    socket.emit('registerEntity', {
+        type: 'player',
+        x: 30,
+        y: 30,
+        direction: UP
     });
+
+    socket.on('entities', function (data) {
+        for (var entity in data) {
+            state.entities[entity] = data[entity];
+        }
+    });
+
+    gameLoop(ctx, state);
 }
 
 function gameLoop(ctx, state) {
@@ -44,16 +51,12 @@ function gameLoop(ctx, state) {
 
 function getInitialState() {
     return {
-        player: {
-            x: 30,
-            y: 30,
-            direction: UP
-        },
+        entities: {},
         keymap: {}
     };
 }
 
-function update(state) {
+function update(state, items) {
     for (var key in state.keymap) {
         if (state.keymap[key]) {
             onKeyDown(state, key);
@@ -85,8 +88,15 @@ function onKeyDown(state, keyCode) {
 function render(ctx, state) {
     ctx.fillStyle = "white";
     ctx.fillRect(0,0,800,600);
-    ctx.beginPath();
-    ctx.arc(state.player.x,state.player.y,25,0,Math.PI*2,true);
-    ctx.stroke();
+    for (var id in state.entities) {
+        var ent = state.entities[id];
+        switch(ent.type) {
+        case 'player':
+            ctx.beginPath();
+            ctx.arc(ent.x,ent.y,25,0,Math.PI*2,true);
+            ctx.stroke();
+            break;
+        }
+    }
 }
 
