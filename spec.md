@@ -1,4 +1,5 @@
 # API Spec
+``` javascript
 GET entities
 [{
     type:"player" | "monster" | "spawn" | "trap" | "wall"
@@ -21,3 +22,4 @@ PUSH place
 {
     type: "wall" | "trap",
 }
+```
