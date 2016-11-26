@@ -5,6 +5,13 @@ window.onload = function() {
     var state = getInitialState();
     document.addEventListener('keypress', function(event) { onKeyPress(state, event); });
     gameLoop(ctx, state);
+
+
+    var socket = io.connect('http://localhost:3000');
+    socket.on('news', function (data) {
+        console.log(data);
+        socket.emit('my other event', { my: 'data' });
+    });
 }
 
 function gameLoop(ctx, state) {
