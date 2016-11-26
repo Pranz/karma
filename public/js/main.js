@@ -35,21 +35,15 @@ window.onload = function() {
     socket.emit('createPlayer', {
         name : 'Player1'
     });
-    
-
-    /*socket.emit('registerEntity', {
-        type: 'player',
-        pos: {
-            x: 30,
-            y: 30
-        },
-        direction: UP
-    });*/
 
     socket.on('entities', (entities) => {
         for (var entityID in entities) {
             state.entities[entityID] = entities[entityID];
         }
+    });
+
+    socket.on('sendPlayerId', (id) => {
+        state.playerId = id;
     });
 
     setInterval(() => {
@@ -68,24 +62,13 @@ function gameLoop(state) {
 function getInitialState() {
     return {
         entities: {},
-        keymap: {}
+        keymap: {},
+        playerId: null
     };
 }
 
 function update(state, items) {
-    /*for (var key in state.keymap) {
-        if (state.keymap[key]) {
-            onKeyDown(state, key);
-        }
-    }*/
     handleMovement(state);
-
-    /*
-    for (var entityID in state.entities) {
-        var ent = state.entities[entityID];
-        ent.pos.x += Math.cos(ent.direction) * PLAYER_SPEED;
-        ent.pos.y += Math.sin(-ent.direction) * PLAYER_SPEED;
-    }*/
 }
 
 function handleMovement(state) {
@@ -104,9 +87,11 @@ function handleMovement(state) {
     console.log("Movement!", dx, dy);
 
     // Send to server
+    state.entities[state.playerId].pos.x += dx;
+    state.entities[state.playerId].pos.y += dy;
     socket.emit('movePlayer', {
         dx: dx,
-        dy: dy,
+        dy: dy
     });
 }
 
@@ -122,19 +107,6 @@ function onKeyUp(state, event) {
 
     state.keymap[event.keyCode] = false;
 }
-
-/*
-function onKeyDown(state, keyCode) {
-    if (keyCode == 37) {    
-        state.player.x -= SPEED;
-    } else if (keyCode == 38) {
-        state.player.y -= SPEED;
-    } else if (keyCode == 39) {
-        state.player.x += SPEED;
-    } else if (keyCode == 40) {
-        state.player.y += SPEED;
-    }
-}*/
 
 function clearScreen() {
     drawRect(0, 0, GAME_WIDTH, GAME_HEIGHT, "white");

@@ -34,6 +34,7 @@ io.on('connection', function (socket) {
         };
 
         entities[socket.id] = player;
+        socket.emit('sendPlayerId', socket.id);
 
         console.log(entities);
     });
