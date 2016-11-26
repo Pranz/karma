@@ -4,6 +4,8 @@ var UP = 1;
 var RIGHT = 2;
 var DOWN = 3;
 
+var FPS = 60;
+
 
 window.onload = function() {
     var c = document.getElementById("game-screen");
@@ -38,15 +40,9 @@ function gameLoop(ctx, state) {
     update(state);
     render(ctx, state);
 
-    d = new Date();
-    var elapsedTime = startTime - d.getTime();
-    if (elapsedTime < 16) {
-        setTimeout(function() {
-            gameLoop(ctx, state);
-        }, 16 - elapsedTime);
-    } else {
+    setInterval(function() {
         gameLoop(ctx, state);
-    }
+    }, 1000/FPS);
 }
 
 function getInitialState() {
