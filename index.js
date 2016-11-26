@@ -16,7 +16,44 @@ http.listen(3000, function () {
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
+
+  var playerName;
+
+  socket.on('createPlayer', function(data) {
+  	if(typeof data.name === 'undefined') {
+
+  	}
+
+  	playerName = data.name;
   });
+
+
+  setInterval(function() {
+  	socket.emit('entities', api.get.entities());
+  }, 100);
 });
+
+
+var api = {};
+api.get = {};
+api.get.entities = function() {
+	var mockData = [
+		{
+			type: 'player',
+			health: 100,
+			strength: 300,
+			pos: {x: 10, y: 10},
+			texture: 'url.png',
+		},
+
+		{
+			type: 'wall',
+			health: 100,
+			strength: 300,
+			pos: {x: 11, y: 11},
+			texture: 'url.png',
+		},
+	];
+
+	return mockData;
+}

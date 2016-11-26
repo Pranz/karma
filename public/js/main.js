@@ -8,9 +8,12 @@ window.onload = function() {
 
 
     var socket = io.connect('http://localhost:3000');
-    socket.on('news', function (data) {
+
+    socket.emit('createPlayer', {name : prompt('Name:')});
+
+    // Draw map
+    socket.on('entities', function (data) {
         console.log(data);
-        socket.emit('my other event', { my: 'data' });
     });
 }
 
