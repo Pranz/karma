@@ -19,44 +19,33 @@ http.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });
 
-io.on('connection', function (socket) {
-    socket.on('createPlayer', function(data) {
-        console.log("Creating player");
+// Create monsters?
+entities[0] = {
+    type: 'monster',
+    health: 1100,
+    strength: 190,
+    pos: {x: 40, y: 40},
+    direction: 4,
+    texture: 'todo.png',
+}
 
-        var player = {
-            type: 'player',
-            health: 1100,
-            strength: 190,
-            pos: {x: 20, y: 20},
-            direction: 0,
-            texture: 'todo.png',
-            name: data.name,
-        };
+entities[1] = {
+    type: 'monster',
+    health: 1100,
+    strength: 190,
+    pos: {x: 60, y: 40},
+    direction: 4,
+    texture: 'todo.png',
+}
 
-        entities[socket.id] = player;
-        socket.emit('sendPlayerId', socket.id);
 
-        console.log(entities);
+io.on('connection', function (socket) {    
+    socket.on('createPlayer', (data) => {
+        api.push.createPlayer(data, socket);
     });
 
-    /*
-    socket.on('registerEntity', function(data) {
-        console.log(data);
-        entities[idCounter] = data;
-        data.id = idCounter;
-        idCounter += 1;
-    });*/
-
     socket.on('movePlayer', (data) => {
-        if(typeof entities[socket.id] == 'undefined') {
-            console.warn('entities[socket.id] isnt set');
-            return;
-        }
-
-        console.log(entities, entities[socket.id]);
-
-        entities[socket.id].pos.x += data.dx;
-        entities[socket.id].pos.y += data.dy;
+        api.push.movePlayer(data, socket);
     });
 
     setInterval(function() {
@@ -65,9 +54,45 @@ io.on('connection', function (socket) {
 });
 
 var api = {};
+
+// GET
 api.get = {};
 api.get.entities = function() {
     return entities;
+}
+
+
+// PUSH
+api.push = {};
+api.push.movePlayer = function(data, socket) {
+    if(typeof entities[socket.id] == 'undefined') {
+        console.warn('entities[socket.id] isnt set');
+        return;
+    }
+
+    console.log(entities, entities[socket.id]);
+
+    entities[socket.id].pos.x += data.dx;
+    entities[socket.id].pos.y += data.dy;
+}
+
+api.push.createPlayer = function(data, socket) {
+    console.log("Creating player");
+
+    var player = {
+        type: 'player',
+        health: 1100,
+        strength: 190,
+        pos: {x: 20, y: 20},
+        direction: 0,
+        texture: 'todo.png',
+        name: data.name,
+    };
+
+    entities[socket.id] = player;
+    socket.emit('sendPlayerId', socket.id);
+
+    console.log(entities);
 }
 
 

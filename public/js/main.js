@@ -141,6 +141,12 @@ function render(state) {
             drawRect(entity.pos.x, entity.pos.y, 10, 10, "black");
             //drawCircle(entity.pos.x, entity.pos.y, 25);
             break;
+        case 'monster':
+            drawRect(entity.pos.x, entity.pos.y, 10, 10, "darkgreen");
+            break;
+        default:
+            console.warn("Unsupported entity type!");
+            break;
         }
     }
 }
