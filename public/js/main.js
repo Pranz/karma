@@ -96,15 +96,23 @@ function handleMovement(state) {
 }
 
 function onKeyDown(state, event) {
-    console.log("keydown");
-
-    event.preventDefault();
+    preventDefaultOnlyFor(KEYS, event);
     state.keymap[event.keyCode] = true;
 }
 
-function onKeyUp(state, event) {
-    console.log("keyup");
+/**
+ * Without this ctrl+r doesnt work etc
+ */
+function preventDefaultOnlyFor(keymap, event) {
+    for(var key in keymap) {
+        console.log(keymap[key]);
+        if(event.keyCode === keymap[key]) {
+            event.preventDefault();
+        }
+    }
+}
 
+function onKeyUp(state, event) {
     state.keymap[event.keyCode] = false;
 }
 
