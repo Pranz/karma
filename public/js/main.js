@@ -19,6 +19,8 @@ var GAME_HEIGHT = 600;
 var ctx, socket;
 
 window.onload = function() {
+    console.log("Window onload");
+
     var c = document.getElementById("game-screen");
     ctx = c.getContext("2d");
     var state = getInitialState();
@@ -30,7 +32,7 @@ window.onload = function() {
         onKeyUp(state, event);
     });
 
-    socket = io.connect('http://localhost:3000');
+    socket = io.connect();
 
     socket.emit('createPlayer', {
         name : 'Player1'
@@ -43,6 +45,7 @@ window.onload = function() {
     });
 
     socket.on('sendPlayerId', (id) => {
+        console.log("sendPlayerId = ", id)
         state.playerId = id;
     });
 

@@ -38,7 +38,6 @@ entities[1] = {
     texture: 'todo.png',
 }
 
-
 io.on('connection', function (socket) {    
     socket.on('createPlayer', (data) => {
         api.push.createPlayer(data, socket);
