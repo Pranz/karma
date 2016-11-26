@@ -20,17 +20,29 @@ export class Entity {
     colide(other, dx, dy) {
        if(other.distanceBetween({x:this.pos.x + dx, y: this.pos.y + dy}) <= this.radisch + other.radisch) {
            // They are close enough to test more collition
+           return true; // TODO FIX HERE.
        }
        return false
     }
 
-    collisionDetection(dx, dy, entityList) {
+    hurt(dmg) {
+        this.health -= dmg;
+    }
+
+    collisionDetection(deltaMove, entityList) {
+        let coliders = []
         for (let e of entityList) {
-            if (this.colide(e, dx, dy)) {
-                // You have colided
-                
+            if (this.colide(e, deltaMove.dx, deltaMove.dy)) {
+                // You have colided with e
+                // Do your deed
+                e.colidedWith(this)
+                coliders.push(e);
             }
         }
+        return coliders;
+    }
+
+    collidedWith(entity) {
     }
 
     tick(delta, entityList) {
