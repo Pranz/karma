@@ -10,7 +10,7 @@ module.exports = class {
 
     // Aprox the radius, but its not a circle
     get radisch() {
-        return Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2))
+        return Math.sqrt(Math.pow(this.size.width/2, 2) + Math.pow(this.size.height/2, 2))
     }
 
     distanceBetween(pos) {
@@ -31,11 +31,12 @@ module.exports = class {
 
     collisionDetection(deltaMove, entityList) {
         let coliders = []
-        for (let e of entityList) {
+        for (let key in entityList) {
+            let e = entityList[key];
             if (this.colide(e, deltaMove.dx, deltaMove.dy)) {
                 // You have colided with e
                 // Do your deed
-                e.colidedWith(this)
+                e.collidedWith(this)
                 coliders.push(e);
             }
         }

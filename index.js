@@ -22,24 +22,6 @@ http.listen(3000, function () {
 });
 
 let gameState = new Gamestate();
-// Create monsters?
-entities[0] = {
-    type: 'monster',
-    health: 1100,
-    strength: 190,
-    pos: {x: 40, y: 40},
-    direction: 4,
-    texture: 'todo.png',
-}
-
-entities[1] = {
-    type: 'monster',
-    health: 1100,
-    strength: 190,
-    pos: {x: 60, y: 40},
-    direction: 4,
-    texture: 'todo.png',
-}
 
 io.on('connection', function (socket) {    
     socket.on('createPlayer', (data) => {
@@ -60,7 +42,7 @@ var api = {};
 // GET
 api.get = {};
 api.get.entities = function() {
-    return gameState.getEntities()
+    return gameState.getEntities();
 }
 
 

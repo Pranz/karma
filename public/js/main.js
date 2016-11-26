@@ -141,11 +141,11 @@ function render(state) {
         var entity = state.entities[id];        
         switch(entity.type) {
         case 'player':
-            drawRect(entity.pos.x, entity.pos.y, 10, 10, "black");
+            drawRect(entity.pos.x, entity.pos.y, entity.size.width, entity.size.height, "black");
             //drawCircle(entity.pos.x, entity.pos.y, 25);
             break;
         case 'monster':
-            drawRect(entity.pos.x, entity.pos.y, 10, 10, "darkgreen");
+            drawRect(entity.pos.x, entity.pos.y, entity.size.width, entity.size.height, "darkgreen");
             break;
         default:
             console.warn("Unsupported entity type!");
