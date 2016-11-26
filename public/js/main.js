@@ -5,18 +5,22 @@ var RIGHT = 2;
 var DOWN = 3;
 
 var FPS = 60;
+var GAME_WIDTH = 800;
+var GAME_HEIGHT = 600;
 
+var ctx, state;
 
 window.onload = function() {
     var c = document.getElementById("game-screen");
-    var ctx = c.getContext("2d");
-    var state = getInitialState();
+    ctx = c.getContext("2d");
+    state = getInitialState();
+
     document.addEventListener('keypress', function(event) { onKeyPress(state, event); });
     document.addEventListener('keyup', function(event) { onKeyUp(state, event); });
 
     var socket = io.connect('http://localhost:3000');
 
-    socket.emit('createPlayer', {name : prompt('Name:')});
+    //socket.emit('createPlayer', {name : prompt('Name:')});
     socket.emit('registerEntity', {
         type: 'player',
         x: 30,
@@ -24,25 +28,23 @@ window.onload = function() {
         direction: UP
     });
 
-    socket.on('entities', function (data) {
-        for (var entity in data) {
-            state.entities[entity] = data[entity];
+    socket.on('entities', function (entities) {
+        for (var entityID in entities) {
+            state.entities[entityID] = entities[entityID];
         }
     });
 
-    gameLoop(ctx, state);
+    setInterval(function() {
+        gameLoop(state);
+    }, 1000/FPS);
 }
 
-function gameLoop(ctx, state) {
-    var d = new Date();
-    var startTime = d.getTime();
-
+/**
+ * Will be called 60 times per second
+ */
+function gameLoop(state) {
     update(state);
-    render(ctx, state);
-
-    setTimeout(function() {
-        gameLoop(ctx, state);
-    }, 1000/FPS);
+    render(state);
 }
 
 function getInitialState() {
@@ -81,16 +83,25 @@ function onKeyDown(state, keyCode) {
     }
 }
 
-function render(ctx, state) {
+function clearScreen() {
     ctx.fillStyle = "white";
-    ctx.fillRect(0,0,800,600);
+    ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+}
+
+function drawCircle(x, y, r) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI*2, true);
+    ctx.stroke();
+}
+
+function render(state) {
+    clearScreen();
+
     for (var id in state.entities) {
-        var ent = state.entities[id];
-        switch(ent.type) {
+        var entity = state.entities[id];
+        switch(entity.type) {
         case 'player':
-            ctx.beginPath();
-            ctx.arc(ent.x,ent.y,25,0,Math.PI*2,true);
-            ctx.stroke();
+            drawCircle(entity.pos.x, entity.pos.y, 25);
             break;
         }
     }

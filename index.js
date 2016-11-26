@@ -22,11 +22,11 @@ io.on('connection', function (socket) {
     var playerName;
 
     socket.on('createPlayer', function(data) {
-  	    if(typeof data.name === 'undefined') {
+        if(typeof data.name === 'undefined') {
 
-  	    }
+        }
 
-  	    playerName = data.name;
+        playerName = data.name;
     });
 
     socket.on('registerEntity', function(data) {
@@ -37,12 +37,26 @@ io.on('connection', function (socket) {
     });
 
     setInterval(function() {
-  	    socket.emit('entities', api.get.entities());
+        socket.emit('entities', api.get.entities());
     }, 100);
 });
 
 var api = {};
 api.get = {};
 api.get.entities = function() {
-	  return entities;
+    var mockEntities = [{
+        type: "player",
+        health: 1100,
+        streanght: 190,
+        pos: {x: randomInt(0, 800), y: randomInt(0, 600)},
+        texture: 'todo.png',
+    }];
+
+    return mockEntities;
+}
+
+
+function randomInt(min,max)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
 }
