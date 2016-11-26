@@ -4,9 +4,10 @@
 GET entities
 [{
     type:"player" | "monster" | "spawn" | "trap" | "wall"
-    health:1100,
-    streanght: 190,
-    pos:{x:x, y:y},
+    health: int,
+    strength: int,
+    pos: {x: float, y: float},
+    direction: radians(float)
     texture:url
 }]
 

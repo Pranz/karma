@@ -47,9 +47,10 @@ api.get.entities = function() {
     var mockEntities = [{
         type: "player",
         health: 1100,
-        streanght: 190,
+        strength: 190,
         pos: {x: randomInt(0, 800), y: randomInt(0, 600)},
-        texture: 'todo.png',
+        direction: 0,
+        texture: 'todo.png'
     }];
 
     return mockEntities;
