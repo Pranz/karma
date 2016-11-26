@@ -56,4 +56,3 @@ api.get.entities = function() {
 
 	return mockData;
 }
->>>>>>> c5a890f1bfa3c3336ae1164c84b8487e3552bd3a
