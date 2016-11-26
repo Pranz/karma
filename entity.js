@@ -1,4 +1,4 @@
-export class Entity {
+module.exports = class {
     constructor(pos, size, health, strength, texture) {
         // Add props 
         this.pos = pos; // Top left on ent

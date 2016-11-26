@@ -1,3 +1,5 @@
+let Gamestate = require('./gamestate');
+
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -19,6 +21,7 @@ http.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });
 
+let gameState = new Gamestate();
 // Create monsters?
 entities[0] = {
     type: 'monster',
@@ -57,14 +60,14 @@ var api = {};
 // GET
 api.get = {};
 api.get.entities = function() {
-    return entities;
+    return gameState.getEntities()
 }
 
 
 // PUSH
 api.push = {};
 api.push.movePlayer = function(data, socket) {
-    if(typeof entities[socket.id] == 'undefined') {
+    /*if(typeof entities[socket.id] == 'undefined') {
         console.warn('entities[socket.id] isnt set');
         return;
     }
@@ -73,11 +76,16 @@ api.push.movePlayer = function(data, socket) {
 
     entities[socket.id].pos.x += data.dx;
     entities[socket.id].pos.y += data.dy;
+    */
+    gameState.playerMove(socket.id, {dx:data.dx, dy:data.dy});
 }
 
 api.push.createPlayer = function(data, socket) {
     console.log("Creating player");
 
+
+    gameState.createPlayer(socket.id);
+/*kk
     var player = {
         type: 'player',
         health: 1100,
@@ -87,11 +95,10 @@ api.push.createPlayer = function(data, socket) {
         texture: 'todo.png',
         name: data.name,
     };
-
     entities[socket.id] = player;
+    */
     socket.emit('sendPlayerId', socket.id);
 
-    console.log(entities);
 }
 
 

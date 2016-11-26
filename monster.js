@@ -1,14 +1,6 @@
 import Entity from 'entity'
 
-    constructor(pos, size, health, strength, texture) {
-        super(pos, size, health, strength, texture);
-    }
 
-    collidedWith(ent) {
-        ent.hurt(this.strength);
-        this.hurt(1);
-    }
-}
 class Monster extends Entity {
     constructor(pos, size, health, strength, texture, hitSpeed, movementSpeed, direction) {
         super(pos, size, health, strength, texture);
@@ -49,7 +41,6 @@ class Monster extends Entity {
             this.pos.y += dm.dy;
         }
     }
-
 }
 
 
