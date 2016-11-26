@@ -48,7 +48,7 @@ io.on('connection', function (socket) {
     });*/
 
     socket.on('movePlayer', (data) => {
-        if(typeof entities[socket.id] == {}) {
+        if(typeof entities[socket.id] == 'undefined') {
             console.warn('entities[socket.id] isnt set');
             return;
         }
