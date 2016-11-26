@@ -1,4 +1,5 @@
-var SPEED = 3;
+var PLAYER_SPEED = 3;
+var MONSTER_SPEED = 5;
 var LEFT = 0;
 var UP = 1;
 var RIGHT = 2;
@@ -8,12 +9,12 @@ var FPS = 60;
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 600;
 
-var ctx, state;
+var ctx;
 
 window.onload = function() {
     var c = document.getElementById("game-screen");
     ctx = c.getContext("2d");
-    state = getInitialState();
+    var state = getInitialState();
 
     document.addEventListener('keypress', function(event) { onKeyPress(state, event); });
     document.addEventListener('keyup', function(event) { onKeyUp(state, event); });
@@ -23,8 +24,10 @@ window.onload = function() {
     //socket.emit('createPlayer', {name : prompt('Name:')});
     socket.emit('registerEntity', {
         type: 'player',
-        x: 30,
-        y: 30,
+        pos: {
+            x: 30,
+            y: 30
+        },
         direction: UP
     });
 
@@ -59,6 +62,11 @@ function update(state, items) {
         if (state.keymap[key]) {
             onKeyDown(state, key);
         }
+    }
+    for (var entityID in state.entities) {
+        var ent = state.entities[entityID];
+        ent.pos.x += Math.cos(ent.direction) * PLAYER_SPEED;
+        ent.pos.y += Math.sin(-ent.direction) * PLAYER_SPEED;
     }
 }
 
