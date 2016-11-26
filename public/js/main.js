@@ -1,4 +1,8 @@
 var SPEED = 3;
+var LEFT = 0;
+var UP = 1;
+var RIGHT = 2;
+var DOWN = 3;
 
 
 window.onload = function() {
@@ -39,7 +43,8 @@ function getInitialState() {
     return {
         player: {
             x: 30,
-            y: 30
+            y: 30,
+            direction: UP
         },
         keymap: {}
     };
@@ -63,7 +68,6 @@ function onKeyUp(state, event) {
 }
 
 function onKeyDown(state, keyCode) {
-    console.log(keyCode);
     if (keyCode == 37) {
         state.player.x -= SPEED;
     } else if (keyCode == 38) {
@@ -79,6 +83,7 @@ function render(ctx, state) {
     ctx.fillStyle = "white";
     ctx.fillRect(0,0,800,600);
     ctx.beginPath();
-    ctx.arc(state.player.x,state.player.y,50,0,Math.PI*2,true);
+    ctx.arc(state.player.x,state.player.y,25,0,Math.PI*2,true);
     ctx.stroke();
 }
+
