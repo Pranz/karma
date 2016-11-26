@@ -40,7 +40,7 @@ function gameLoop(ctx, state) {
     update(state);
     render(ctx, state);
 
-    setInterval(function() {
+    setTimeout(function() {
         gameLoop(ctx, state);
     }, 1000/FPS);
 }
