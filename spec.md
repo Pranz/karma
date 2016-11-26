@@ -1,4 +1,5 @@
 # API Spec
+
 ``` javascript
 GET entities
 [{
@@ -7,7 +8,7 @@ GET entities
     streanght: 190,
     pos:{x:x, y:y},
     texture:url
-},]
+}]
 
 PUSH possition
 {
@@ -16,10 +17,17 @@ PUSH possition
 }
 
 PUSH punch
-{}
+{
+
+}
 
 PUSH place
 {
     type: "wall" | "trap",
+}
+
+PUSH createPlayer 
+{
+	name: <string>
 }
 ```
