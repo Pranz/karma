@@ -1,11 +1,11 @@
 export class Entity {
     constructor(pos, size, health, strength, texture) {
-       // Add props 
-       this.pos = pos; // Top left on ent
-       this.size = size;
-       this.health = health;
-       this.strength = strength;
-       this.texture = texture;
+        // Add props 
+        this.pos = pos; // Top left on ent
+        this.size = size;
+        this.health = health;
+        this.strength = strength;
+        this.texture = texture;
     }
 
     // Aprox the radius, but its not a circle
@@ -36,8 +36,6 @@ export class Entity {
     tick(delta, entityList) {
         throw "Not Implemented"
     }
-
-
 }
 
 

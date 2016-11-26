@@ -8,6 +8,9 @@ app.use(express.static('public'));
 var idCounter = 0;
 var entities = {};
 
+var playerName;
+var socketData = {};
+
 app.get('/api/hello', function (req, res) {
     res.send('Hello World!');
 });
@@ -17,23 +20,42 @@ http.listen(3000, function () {
 });
 
 io.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
-
-    var playerName;
-
     socket.on('createPlayer', function(data) {
-        if(typeof data.name === 'undefined') {
+        console.log("Creating player");
 
-        }
+        var player = {
+            type: 'player',
+            health: 1100,
+            strength: 190,
+            pos: {x: 20, y: 20},
+            direction: 0,
+            texture: 'todo.png',
+            name: data.name,
+        };
 
-        playerName = data.name;
+        entities[socket.id] = player;
+
+        console.log(entities);
     });
 
+    /*
     socket.on('registerEntity', function(data) {
         console.log(data);
         entities[idCounter] = data;
         data.id = idCounter;
         idCounter += 1;
+    });*/
+
+    socket.on('movePlayer', (data) => {
+        if(typeof entities[socket.id] == {}) {
+            console.warn('entities[socket.id] isnt set');
+            return;
+        }
+
+        console.log(entities, entities[socket.id]);
+
+        entities[socket.id].pos.x += data.dx;
+        entities[socket.id].pos.y += data.dy;
     });
 
     setInterval(function() {
@@ -44,16 +66,7 @@ io.on('connection', function (socket) {
 var api = {};
 api.get = {};
 api.get.entities = function() {
-    var mockEntities = [{
-        type: "player",
-        health: 1100,
-        strength: 190,
-        pos: {x: randomInt(0, 800), y: randomInt(0, 600)},
-        direction: 0,
-        texture: 'todo.png'
-    }];
-
-    return mockEntities;
+    return entities;
 }
 
 

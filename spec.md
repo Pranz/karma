@@ -1,15 +1,18 @@
 # API Spec
 
-``` javascript
+```javascript
 GET entities
-[{
-    type:"player" | "monster" | "spawn" | "trap" | "wall"
-    health: int,
-    strength: int,
-    pos: {x: float, y: float},
-    direction: radians(float)
-    texture:url
-}]
+{
+	*id*: {
+	    type:"player" | "monster" | "spawn" | "trap" | "wall"
+	    health: int,
+	    strength: int,
+	    pos: {x: float, y: float},
+	    direction: radians(float)
+	    texture:url
+	},
+	...
+}
 
 PUSH possition
 {
@@ -27,8 +30,8 @@ PUSH place
     type: "wall" | "trap",
 }
 
-PUSH createPlayer 
+PUSH registerEntity 
 {
-	name: <string>
+	type: 'player',
 }
 ```
