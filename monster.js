@@ -18,6 +18,14 @@ let Monster = class extends Entity {
         return {dx:dx,dy: dy};
     }
 
+    hurt(dmg) {
+        console.log("I got hurt", dmg, "My health is now", this.health);
+        this.health -= dmg;
+        if (this.health <= 0) {
+            delete this;
+        }
+    }
+
     tick(deltaTime, entityList) {
         this.hitLoadtime -= deltaTime;
         // Is there something infront of me??

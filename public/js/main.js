@@ -10,6 +10,7 @@ var KEYS = {
     UP : 38,
     RIGHT : 39,
     DOWN : 40,
+    SPACE : 32
 };
 
 var FPS = 60;
@@ -39,6 +40,7 @@ window.onload = function() {
     });
 
     socket.on('entities', (entities) => {
+        state.entities = {};
         for (var entityID in entities) {
             state.entities[entityID] = entities[entityID];
         }
@@ -75,7 +77,11 @@ function update(state, items) {
 }
 
 function handleMovement(state) {
-    var dx = 0;
+   if (state.keymap[KEYS.SPACE]) {
+        console.log("Space")
+        socket.emit('playerPunch', {});
+    }
+   var dx = 0;
     var dy = 0;
 
     dx -= state.keymap[KEYS.LEFT] ? 1 : 0;
@@ -87,8 +93,6 @@ function handleMovement(state) {
         return;
     }
 
-    console.log("Movement!", dx, dy);
-
     // Send to server
     state.entities[state.playerId].pos.x += dx;
     state.entities[state.playerId].pos.y += dy;
@@ -96,6 +100,8 @@ function handleMovement(state) {
         dx: dx,
         dy: dy
     });
+
+    
 }
 
 function onKeyDown(state, event) {
@@ -134,6 +140,12 @@ function drawRect(x, y, width, height, color) {
     ctx.fillRect(x, y, width, height);
 }
 
+function drawText(text, x, y, color) {
+    ctx.font = "24px serif";
+    ctx.fillStyle = color;
+    ctx.fillText(text, x, y);
+}
+
 function render(state) {
     clearScreen();
 
@@ -142,7 +154,9 @@ function render(state) {
         switch(entity.type) {
         case 'player':
             drawRect(entity.pos.x, entity.pos.y, entity.size.width, entity.size.height, "black");
-            //drawCircle(entity.pos.x, entity.pos.y, 25);
+            drawText("Health = " + entity.health, 10, 20, "red");
+            drawText("Stregth = " + entity.strength, 200, 20, "red");
+            drawText("Karma = " + entity.karma, 400, 20, "red");
             break;
         case 'monster':
             drawRect(entity.pos.x, entity.pos.y, entity.size.width, entity.size.height, "darkgreen");

@@ -7,11 +7,11 @@ module.exports =  class {
         this.gridHeight = 60;
         this.players = {}
 
-        this.monsters = [
-            new Monster({x:0, y:0}, {width:10, height:10}, 100, 10, "", 1, 10, 0),
-            new Monster({x:100, y:100}, {width:10, height:10}, 100, 10, "", 1, 10, 3.14),
-            new Monster({x:400, y:300}, {width:10, height:10}, 100, 10, "", 1, 10, 3/2*Math.PI)
-        ];
+        this.monsters = {
+            1:new Monster({x:0, y:0}, {width:10, height:10}, 100, 10, "", 1, 10, 0),
+            2:new Monster({x:100, y:100}, {width:10, height:10}, 100, 10, "", 1, 10, 3.14),
+            3:new Monster({x:400, y:300}, {width:10, height:10}, 100, 10, "", 1, 10, 3/2*Math.PI)
+        };
         this.walls = [];
         this.traps = [];
         setInterval(() => {
@@ -28,6 +28,9 @@ module.exports =  class {
         
         for(let key in this.monsters) {
             this.monsters[key].tick(delta, entityList);
+            if (this.monsters[key].health <= 0) {
+                delete this.monsters[key];
+            }
         }
     }
 
@@ -35,17 +38,24 @@ module.exports =  class {
         let ret = {};
         for(let key in this.players) {
             ret[key] = {
+                type:"player",
                 pos: this.players[key].pos, 
                 size: this.players[key].size, 
-                type:"player"
+                health: this.players[key].health,
+                strength: this.players[key].strength,
+                karma: this.players[key].karma,
+                traps: this.players[key].traps,
+                walls: this.players[key].walls
             };
         }
 
         for(let key in this.monsters) {
             ret["monster"+key] = {
+                type:"monster",
                 pos:this.monsters[key].pos, 
-                size: this.monsters[key].size, 
-                type:"monster"
+                size: this.monsters[key].size,
+                health: this.monsters[key].health,
+                strength: this.monsters[key].strength 
             };
         }
 
@@ -67,6 +77,7 @@ module.exports =  class {
     }
 
     playerPunch(playerID) {
+        console.log("Plaer is punching");
         this.players[playerID].onPunch(this.monsters);
     }
 

@@ -32,6 +32,11 @@ io.on('connection', function (socket) {
         api.push.movePlayer(data, socket);
     });
 
+    socket.on('playerPunch', (data) => {
+        console.log("Player in punching");
+        api.push.playerPunch(data, socket);
+    });
+
     setInterval(function() {
         socket.emit('entities', api.get.entities());
     }, 100);
@@ -60,6 +65,10 @@ api.push.movePlayer = function(data, socket) {
     entities[socket.id].pos.y += data.dy;
     */
     gameState.playerMove(socket.id, {dx:data.dx, dy:data.dy});
+}
+
+api.push.playerPunch = function(data, socket) {
+    gameState.playerPunch(socket.id);
 }
 
 api.push.createPlayer = function(data, socket) {

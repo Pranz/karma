@@ -1,9 +1,11 @@
 let Entity = require('./entity');
+let Monster = require('./monster');
 
 module.exports = class extends Entity {
     constructor(pos, size, health, strength, texture, hitSpeed, movementSpeed, direction) {
         super(pos, size, health, strength, texture);
 
+        this.karma = 9001;
         this.hitSpeed = hitSpeed; // Punches period, time to elapse between punches 
         this.movementSpeed = movementSpeed; // Squares per millisecond
         this.direction = direction; // Directions in radians. 0 => right, counter clockvise
